@@ -115,7 +115,7 @@ function update_checker( $transient ) {
         return $transient;
     }
     // URL do JSON de atualizações
-    $remote_json = 'https://raw.githubusercontent.com/rafabandeira/azietorres/refs/heads/main/azietorres.json';
+    $remote_json = 'https://raw.githubusercontent.com/rafabandeira/azietorres/refs/heads/main/azietorres.json'; 
     // Buscar dados do JSON
     $response = wp_remote_get( $remote_json, array(
         'timeout' => 10,
