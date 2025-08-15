@@ -1,24 +1,14 @@
 {
   "name": "Azi & Torres",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "author": "BandeiraGroup",
   "author_url": "https://bandeiragroup.com.br",
   "details_url": "https://github.com/rafabandeira/azietorres/releases",
-  "download_url": "https://github.com/rafabandeira/azietorres/archive/refs/tags/v2.0.4.zip",
+  "download_url": "https://github.com/rafabandeira/azietorres/archive/refs/tags/v2.0.5.zip",
   "requires_wp": "6.0",
   "requires_php": "7.4",
   "last_updated": "2024-08-16 10:00:00",
   "sections": {
-    "description": "Este é o tema personalizado para o site Azi & Torres, desenvolvido para ser leve, rápido e responsivo.",
-    "changelog": {
-      "1.0.1": [
-        "Correção: Corrigido bug na paginação de artigos na página de detalhes.",
-        "Melhoria: Otimização das imagens para carregamento mais rápido.",
-        "Novo: Adicionada funcionalidade de 'Carregar Mais' via AJAX."
-      ],
-      "1.0.0": [
-        "Lançamento inicial do tema."
-      ]
-    }
+    "description": "Este é o tema personalizado para o site Azi & Torres, desenvolvido para ser leve, rápido e responsivo."
   }
 }
