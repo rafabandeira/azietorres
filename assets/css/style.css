@@ -21,6 +21,15 @@ a:hover {
 h1, h2, h3, h4, h5, h6 {
   font-family: "Raleway", sans-serif;
 }
+.swiper {
+    overflow: hidden;
+}
+.swiper-button-next, .swiper-button-prev {
+  color: #BB892A;
+}
+.swiper-button-next:hover, .swiper-button-prev:hover {
+  color: #D6B87F;
+}
 
 /*--------------------------------------------------------------
 

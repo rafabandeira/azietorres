@@ -295,8 +295,9 @@ add_action( 'save_post', 'area_atuacao_details_save' );
 
 
 
-/////////////////////////////////
-// Custom Post Type for Advogados
+////////////////////////////////////
+// Custom Post Type for ADVOGADOS //
+////////////////////////////////////
 function create_advogado_post_type() {
     $labels = array(
         'name'               => _x( 'Advogados', 'post type general name' ),
@@ -326,8 +327,7 @@ function create_advogado_post_type() {
         'has_archive'        => true,
         'hierarchical'       => false,
         'menu_position'      => null,
-        'supports'           => array( 'title', 'editor', 'thumbnail' ),
-        'menu_icon'          => 'dashicons-groups', // Change this line to use a person icon
+        'supports'           => array( 'title', 'thumbnail', 'sticky' ), 
     );
     register_post_type( 'advogado', $args );
 }
@@ -363,7 +363,14 @@ function advogado_expertise_save( $post_id ) {
     }
 }
 add_action( 'save_post', 'advogado_expertise_save' );
+function enqueue_swiper_scripts() {
+    // Adiciona o CSS do Swiper
+    wp_enqueue_style( 'swiper-css', 'https://unpkg.com/swiper@8/swiper-bundle.min.css', array(), '8.4.5' );
 
+    // Adiciona o JS do Swiper
+    wp_enqueue_script( 'swiper-js', 'https://unpkg.com/swiper@8/swiper-bundle.min.js', array('jquery'), '8.4.5', true );
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_swiper_scripts' );
 
 
 

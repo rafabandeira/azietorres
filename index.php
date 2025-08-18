@@ -162,7 +162,7 @@
 </section>
 <!-- End Services Section -->
   
-  <!-- ======= Team Section ======= -->
+<!-- ======= Team Section ======= -->
 <section id="team" class="team section-bg">
     <div class="container" data-aos="fade-up">
         <div class="section-title">
@@ -170,42 +170,76 @@
             <p>Sócios e Advogados</p>
         </div>
         <div class="row">
-            <?php
-            // Query para buscar os advogados
-            $args = array(
-                'post_type' => 'advogado',
-                'posts_per_page' => -1, // Busca todos os advogados
-                'orderby' => 'title',
-                'order' => 'ASC'
-            );
-            $query = new WP_Query($args);
-            if ($query->have_posts()) :
-                $delay = 100; // Delay inicial para animação
-                while ($query->have_posts()) : $query->the_post();
-                // Recupera os dados personalizados
-                $photo = get_the_post_thumbnail_url(get_the_ID(), 'img-fluid'); // Foto do advogado
-                $expertise = get_post_meta(get_the_ID(), '_advogado_expertise', true); // Área de atuação
-            ?>
-            <div class="col-lg-3 col-md-6 col-xs-12">
-                <div class="member" data-aos="fade-up" data-aos-delay="<?php echo $delay; ?>">
-                    <div class="pic">
-                        <img src="<?php echo esc_url($photo ? $photo : get_template_directory_uri() . '/assets/img/team/default.jpg'); ?>" class="img-fluid featured-image-fix" alt="<?php the_title(); ?>">
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    <?php
+                    // Query para buscar os advogados
+                    $args = array(
+                        'post_type' => 'advogado',
+                        'posts_per_page' => -1,
+                        'orderby' => 'title',
+                        'order' => 'ASC'
+                    );
+                    $query = new WP_Query($args);
+                    if ($query->have_posts()) :
+                        while ($query->have_posts()) : $query->the_post();
+                            $photo = get_the_post_thumbnail_url(get_the_ID(), 'full');
+                            $expertise = get_post_meta(get_the_ID(), '_advogado_expertise', true);
+                    ?>
+                    <div class="swiper-slide">
+                        <div class="member" data-aos="fade-up">
+                            <div class="pic">
+                                <img src="<?php echo esc_url($photo ? $photo : get_template_directory_uri() . '/assets/img/team/default.jpg'); ?>" class="img-fluid featured-image-fix" alt="<?php the_title(); ?>">
+                            </div>
+                            <div class="member-info">
+                                <h4><?php the_title(); ?></h4>
+                                <span><?php echo esc_html($expertise); ?></span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="member-info">
-                        <h4><?php the_title(); ?></h4>
-                        <span><?php echo esc_html($expertise); ?></span>
-                    </div>
+                    <?php
+                        endwhile; wp_reset_postdata();
+                    else :
+                        echo '<p>Nenhum advogado encontrado.</p>';
+                    endif;
+                    ?>
                 </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
             </div>
-            <?php
-                $delay += 100; // Incrementa o delay para animação
-                endwhile;
-                wp_reset_postdata();
-            else :
-                echo '<p>Nenhum advogado encontrado.</p>';
-            endif;
-            ?>
         </div>
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+              var swiper = new Swiper(".mySwiper", {
+                  slidesPerView: 4,
+                  spaceBetween: 30,
+                  navigation: {
+                      nextEl: ".swiper-button-next",
+                      prevEl: ".swiper-button-prev",
+                  },
+                  pagination: {
+                      el: ".swiper-pagination",
+                      clickable: true,
+                  },
+                  loop: true, // Adiciona o loop infinito
+                  autoplay: { // Configura o autoplay
+                      delay: 2500, // Tempo em milissegundos entre as transições
+                      disableOnInteraction: false, // Continua a reprodução automática mesmo após o usuário interagir
+                  },
+                  breakpoints: {
+                      320: {
+                          slidesPerView: 1
+                      },
+                      768: {
+                          slidesPerView: 2
+                      },
+                      1024: {
+                          slidesPerView: 4
+                      }
+                  }
+              });
+          });
+      </script>
     </div>
 </section>
 <!-- End Team Section -->
