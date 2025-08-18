@@ -1,6 +1,11 @@
 <?php require_once __DIR__ . '/functions/security.php' ?>
 
 <!-- ======= Footer ======= -->
+  <?php
+    $contact_endereco = get_option('contact_endereco', "Av. Prof. Magalhães Neto, n° 1550, Ed. Premier Tower Empresarial, Conj. salas 1106 a 1110, Pituba, Salvador/BA. CEP 41.810-012");
+    $contact_email = get_option('contact_email', "recepcao@azietorres.com.br");
+    $contact_tel = get_option('contact_telefax', "71 3342-1228\n71 3646-8170");
+  ?>
 
 <footer id="footer">
   <div class="footer-top">
@@ -9,26 +14,25 @@
         <div class="col-lg-3 col-md-6">
           <div class="footer-info">
             <h3><?php bloginfo('nome'); ?><br><?php bloginfo('description'); ?></h3>
-            <p><?php echo get_option('contact_address'); ?><br>
+            <p><?php echo esc_html($contact_endereco); ?><br>
                 <br>
                 <strong>Telefone:</strong> 
-                        <?php 
-                            $telefones = get_option('contact_telefax');
-                            $items = explode("\n", $telefones);
-                            $first = true; // Flag to check if it's the first item
-                            foreach ($items as $item) {
-                                $item = trim($item);
-                                if ($item) { 
-                                    if (!$first) {
-                                        echo ' • '; // Add separator only after the first item
-                                    }
-                                    echo esc_html($item);
-                                    $first = false; // Set flag to false after the first item
-                                }
+                  <?php 
+                    $items = explode("\n", $contact_tel);
+                    $first = true; // Flag to check if it's the first item
+                    foreach ($items as $item) {
+                        $item = trim($item);
+                        if ($item) { 
+                            if (!$first) {
+                                echo ' • '; // Add separator only after the first item
                             }
-                        ?>
+                            echo esc_html($item);
+                            $first = false; // Set flag to false after the first item
+                        }
+                    }
+                  ?>
                 <br>
-                <strong>Email:</strong> <?php echo get_option('contact_email'); ?><br>
+                <strong>Email:</strong> <?php echo esc_html($contact_email); ?><br>
             </p>
             <div class="social-links mt-3"> 
                 <?php my_theme_display_social_media(); ?> 
@@ -47,9 +51,6 @@
         </div>
         <div class="col-lg-3 col-md-6 footer-links">
           <h4>Áreas de atuação</h4>
-
-
-
           <?php
             // Query para buscar as Áreas de Atuação
             $args = array(
@@ -103,8 +104,6 @@
 <script src="<?php echo get_template_directory_uri(); ?>/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> 
 <script src="<?php echo get_template_directory_uri(); ?>/assets/vendor/glightbox/js/glightbox.min.js"></script> 
 <script src="<?php echo get_template_directory_uri(); ?>/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script> 
-<script src="<?php echo get_template_directory_uri(); ?>/assets/vendor/php-email-form/validate.js"></script> 
-<script src="<?php echo get_template_directory_uri(); ?>/assets/vendor/purecounter/purecounter.js"></script> 
 <script src="<?php echo get_template_directory_uri(); ?>/assets/vendor/swiper/swiper-bundle.min.js"></script> 
 
 <!-- Template Main JS File --> 

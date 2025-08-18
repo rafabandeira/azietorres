@@ -24,20 +24,46 @@
         <!-- Template Main CSS File -->
         <link href="<?php echo get_template_directory_uri(); ?>/assets/css/style.css" rel="stylesheet">
 
-        <!-- Open Graph Meta Tags -->
-        <meta property="og:url" content="<?php get_permalink(); ?>">
-        <meta property="og:type" content="article">
-        <meta property="og:title" content="<?php wp_title( '|', true, 'right' ); ?>">
-        <meta property="og:description" content="<?php custom_excerpt(150); ?>">
-        <meta property="og:image" content="<?php echo get_the_post_thumbnail_url($post->ID); ?>">
 
+        <?php
+        // Define a descrição com base no tipo de página
+        if ( is_singular() ) {
+            // Se for um post/página, use o resumo (excerpt) ou o conteúdo
+            $og_description = has_excerpt() ? get_the_excerpt() : wp_trim_words( get_the_content(), 50 );
+        } else {
+            // Se for a página inicial ou de arquivo, use a descrição do site
+            $og_description = get_bloginfo( 'description' );
+        }
+        // Define o título com base no tipo de página
+        if ( is_singular() ) {
+            $og_title = get_the_title();
+        } else {
+            $og_title = get_bloginfo( 'name' ) . ' | ' . get_bloginfo( 'description' );
+        }
+        // Define a URL da página atual
+        $og_url = get_permalink();
+        // Define a imagem com base no tipo de página
+        if ( is_singular() && has_post_thumbnail() ) {
+            $og_image = get_the_post_thumbnail_url( get_the_ID(), 'full' );
+        } else {
+            // Imagem padrão do site caso não haja imagem destacada
+            $og_image = get_template_directory_uri() . '/assets/img/favicon-azietorres-02.png';
+        }
+        ?>
+        <!-- Open Graph Meta Tags -->
+        <meta property="og:url" content="<?php echo esc_url( $og_url ); ?>">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="<?php echo esc_attr( $og_title ); ?>">
+        <meta property="og:description" content="<?php echo esc_attr( $og_description ); ?>">
+        <meta property="og:image" content="<?php echo esc_url( $og_image ); ?>">
+        <meta property="og:site_name" content="<?php echo get_bloginfo( 'name' ); ?>">
         <!-- Twitter Meta Tags -->
         <meta name="twitter:card" content="summary_large_image">
         <meta property="twitter:domain" content="<?php echo parse_url(home_url(), PHP_URL_HOST); ?>">
-        <meta property="twitter:url" content="<?php get_permalink(); ?>">
-        <meta name="twitter:title" content="<?php wp_title( '|', true, 'right' ); ?>">
-        <meta name="twitter:description" content="<?php custom_excerpt(150); ?>">
-        <meta name="twitter:image" content="<?php echo get_the_post_thumbnail_url($post->ID); ?>">
+        <meta property="twitter:url" content="<?php echo esc_url( $og_url ); ?>">
+        <meta name="twitter:title" content="<?php echo esc_attr( $og_title ); ?>">
+        <meta name="twitter:description" content="<?php echo esc_attr( $og_description ); ?>">
+        <meta name="twitter:image" content="<?php echo esc_url( $og_image ); ?>">
     </head>
 
 <body>

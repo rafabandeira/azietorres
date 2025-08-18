@@ -246,16 +246,9 @@
   
   <!-- ======= Contact Section ======= -->
   <?php
-    // Funções para reter os valores dos campos
-    function get_field_value($field_name, $default = '') {
-      return isset($_POST[$field_name]) ? esc_attr($_POST[$field_name]) : $default;
-    }
-    function get_textarea_value($field_name, $default = '') {
-      return isset($_POST[$field_name]) ? esc_textarea($_POST[$field_name]) : $default;
-    }
-    $contact_endereco = get_option('contact_endereco', 'Av. Prof. Magalhães Neto, n° 1550, Ed. Premier Tower Empresarial, Conj. salas 1106 a 1110, Pituba, Salvador/BA. CEP 41.810-012');
-    $contact_email = get_option('contact_email', 'recepcao@azietorres.com.br');
-    $contact_tel = get_option('contact_telefax', '71 3342-1228\n71 3646-8170');
+    $contact_endereco = get_option('contact_endereco', "Av. Prof. Magalhães Neto, n° 1550, Ed. Premier Tower Empresarial, Conj. salas 1106 a 1110, Pituba, Salvador/BA. CEP 41.810-012");
+    $contact_email = get_option('contact_email', "recepcao@azietorres.com.br");
+    $contact_tel = get_option('contact_telefax', "71 3342-1228\n71 3646-8170");
   ?>
   <section id="contact" class="contact">
     <div class="container" data-aos="fade-up">
@@ -277,7 +270,8 @@
         <div class="col-lg-6">
           <div class="row">
             <div class="col-md-12">
-              <div class="info-box"> <i class="bx bx-map"></i>
+              <div class="info-box"> 
+                <i class="bx bx-map"></i>
                 <h3>Endereço</h3>
                 <p><?php echo esc_html($contact_endereco); ?></p>
               </div>

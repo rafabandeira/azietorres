@@ -121,12 +121,10 @@ function update_checker( $transient ) {
         'timeout' => 10,
         'headers' => array( 'Accept' => 'application/json' )
     ) );
-
     // Se houver erro, retorne o transient original
     if ( is_wp_error( $response ) ) {
         return $transient;
     }
-
     // Verifica se a resposta é válida
     if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
         return $transient;
@@ -363,14 +361,6 @@ function advogado_expertise_save( $post_id ) {
     }
 }
 add_action( 'save_post', 'advogado_expertise_save' );
-function enqueue_swiper_scripts() {
-    // Adiciona o CSS do Swiper
-    wp_enqueue_style( 'swiper-css', 'https://unpkg.com/swiper@8/swiper-bundle.min.css', array(), '8.4.5' );
-
-    // Adiciona o JS do Swiper
-    wp_enqueue_script( 'swiper-js', 'https://unpkg.com/swiper@8/swiper-bundle.min.js', array('jquery'), '8.4.5', true );
-}
-add_action( 'wp_enqueue_scripts', 'enqueue_swiper_scripts' );
 
 
 
