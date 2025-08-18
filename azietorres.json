@@ -1,10 +1,10 @@
 {
   "name": "Azi & Torres",
-  "version": "2.0.75",
+  "version": "2.0.7",
   "author": "BandeiraGroup",
   "author_url": "https://bandeiragroup.com.br",
   "details_url": "https://github.com/rafabandeira/azietorres/releases",
-  "download_url": "https://github.com/rafabandeira/azietorres/archive/refs/tags/v2.0.7zip",
+  "download_url": "https://github.com/rafabandeira/azietorres/archive/refs/tags/v2.0.7.zip",
   "requires_wp": "6.0",
   "requires_php": "7.4",
   "last_updated": "2024-08-16 10:00:00",
