@@ -167,7 +167,7 @@
     <div class="container" data-aos="fade-up">
         <div class="section-title">
             <h2>Equipe</h2>
-            <p>Sócios</p>
+            <p>Sócios e Advogados</p>
         </div>
         <div class="row">
             <?php
@@ -189,7 +189,7 @@
             <div class="col-lg-3 col-md-6 col-xs-12">
                 <div class="member" data-aos="fade-up" data-aos-delay="<?php echo $delay; ?>">
                     <div class="pic">
-                        <img src="<?php echo esc_url($photo ? $photo : get_template_directory_uri() . '/assets/img/team/default.jpg'); ?>" class="img-fluid" alt="<?php the_title(); ?>">
+                        <img src="<?php echo esc_url($photo ? $photo : get_template_directory_uri() . '/assets/img/team/default.jpg'); ?>" class="img-fluid featured-image-fix" alt="<?php the_title(); ?>">
                     </div>
                     <div class="member-info">
                         <h4><?php the_title(); ?></h4>
@@ -211,6 +211,18 @@
 <!-- End Team Section -->
   
   <!-- ======= Contact Section ======= -->
+  <?php
+    // Funções para reter os valores dos campos
+    function get_field_value($field_name, $default = '') {
+      return isset($_POST[$field_name]) ? esc_attr($_POST[$field_name]) : $default;
+    }
+    function get_textarea_value($field_name, $default = '') {
+      return isset($_POST[$field_name]) ? esc_textarea($_POST[$field_name]) : $default;
+    }
+    $contact_endereco = get_option('contact_endereco', 'Av. Prof. Magalhães Neto, n° 1550, Ed. Premier Tower Empresarial, Conj. salas 1106 a 1110, Pituba, Salvador/BA. CEP 41.810-012');
+    $contact_email = get_option('contact_email', 'recepcao@azietorres.com.br');
+    $contact_tel = get_option('contact_telefax', '71 3342-1228\n71 3646-8170');
+  ?>
   <section id="contact" class="contact">
     <div class="container" data-aos="fade-up">
       <div class=" section-title">
@@ -233,20 +245,20 @@
             <div class="col-md-12">
               <div class="info-box"> <i class="bx bx-map"></i>
                 <h3>Endereço</h3>
-                <p><?php echo get_option('contact_address'); ?></p>
+                <p><?php echo esc_html($contact_endereco); ?></p>
               </div>
             </div>
             <div class="col-md-6">
               <div class="info-box mt-4"> <i class="bx bx-envelope"></i>
                 <h3>Email</h3>
-                <p><?php echo get_option('contact_email'); ?></p>
+                <p><?php echo esc_html($contact_email); ?></p>
               </div>
             </div>
             <div class="col-md-6">
               <div class="info-box mt-4"> <i class="bx bx-phone-call"></i>
                 <h3>Telefax</h3>
                 <?php 
-                    $telefones = get_option('contact_telefax');
+                    $telefones = esc_html($contact_tel);
                     foreach (explode("\n", $telefones) as $item) {
                         $item = trim($item);
                         if ($item) { echo '<p> ' . esc_html($item) . '</p>'; }

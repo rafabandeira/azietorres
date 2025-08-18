@@ -243,7 +243,7 @@ function create_area_atuacao_post_type() {
         'has_archive'        => true,
         'hierarchical'       => false,
         'menu_position'      => null,
-        'supports'           => array( 'title', 'editor', 'excerpt' ),
+        'supports'           => array( 'title', 'editor' ),
         'menu_icon'          => 'dashicons-awards', // Ícone de balança
     );
     register_post_type( 'area_atuacao', $args );
@@ -304,13 +304,13 @@ function create_advogado_post_type() {
         'menu_name'          => _x( 'Advogados', 'admin menu' ),
         'name_admin_bar'     => _x( 'Advogado', 'add new on admin bar' ),
         'add_new'            => _x( 'Criar Novo', 'advogado' ),
-        'add_new_item'       => __( 'Criar Novo ' ),
-        'new_item'           => __( 'Novo ' ),
-        'edit_item'          => __( 'Edit ' ),
-        'view_item'          => __( 'Ver ' ),
-        'all_items'          => __( 'Todos ' ),
-        'search_items'       => __( 'Procurar ' ),
-        'parent_item_colon'  => __( 'Parent Advogados:' ),
+        'add_new_item'       => __( 'Criar Novo Advogado' ),
+        'new_item'           => __( 'Novo Advogado' ),
+        'edit_item'          => __( 'Editar Advogado' ),
+        'view_item'          => __( 'Ver Advogado' ),
+        'all_items'          => __( 'Todos Advogados' ),
+        'search_items'       => __( 'Procurar Advogados' ),
+        'parent_item_colon'  => __( 'Advogado Pai:' ),
         'not_found'          => __( 'Nenhum Advogado encontrado.' ),
         'not_found_in_trash' => __( 'Nenhum Advogado encontrado no lixo.' )
     );
@@ -322,7 +322,7 @@ function create_advogado_post_type() {
         'show_in_menu'       => true,
         'query_var'          => true,
         'rewrite'            => array( 'slug' => 'advogado' ),
-        'capability_type'    => array('editor', 'editor'), // Set capability to editor
+        'capability_type'    => 'post', // Set capability to post
         'has_archive'        => true,
         'hierarchical'       => false,
         'menu_position'      => null,
