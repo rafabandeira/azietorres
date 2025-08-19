@@ -203,6 +203,24 @@ function change_post_menu_label() {
     $menu[5][6] = 'dashicons-format-quote'; // Muda o ícone do menu
 }
 add_action('admin_menu', 'change_post_menu_label');
+// Verifica se existem posts do tipo 'artigos'. 
+function tem_artigos_posts() {
+    // A variável estática mantém seu valor entre as chamadas da função.
+    static $artigos_posts = null;
+    // Se a verificação ainda não foi feita ($artigos_posts é null), execute-a.
+    if ($artigos_posts === null) {
+        $posts = get_posts(array(
+            'post_type'      => 'post',
+            'post_status'    => 'publish',
+            'posts_per_page' => 1,          // Só precisamos de 1 para saber que existe.
+            'fields'         => 'ids',      // A forma mais rápida de consulta.
+        ));
+        // Define a variável como true se encontrou posts, ou false se o array estiver vazio.
+        $artigos_posts = !empty($posts);
+    }
+    // Retorna o resultado (que agora está em cache).
+    return $artigos_posts;
+}
 
 
 
@@ -288,7 +306,24 @@ function area_atuacao_details_save( $post_id ) {
     }
 }
 add_action( 'save_post', 'area_atuacao_details_save' );
-
+// Verifica se existem posts do tipo 'area_atuacao'. 
+function tem_area_atuacao_posts() {
+    // A variável estática mantém seu valor entre as chamadas da função.
+    static $has_posts = null;
+    // Se a verificação ainda não foi feita ($has_posts é null), execute-a.
+    if ($has_posts === null) {
+        $posts = get_posts(array(
+            'post_type'      => 'area_atuacao',
+            'post_status'    => 'publish',
+            'posts_per_page' => 1,          // Só precisamos de 1 para saber que existe.
+            'fields'         => 'ids',      // A forma mais rápida de consulta.
+        ));
+        // Define a variável como true se encontrou posts, ou false se o array estiver vazio.
+        $has_posts = !empty($posts);
+    }
+    // Retorna o resultado (que agora está em cache).
+    return $has_posts;
+}
 
 
 
@@ -361,6 +396,25 @@ function advogado_expertise_save( $post_id ) {
     }
 }
 add_action( 'save_post', 'advogado_expertise_save' );
+// Verifica se existem posts do tipo 'advogado'. 
+function tem_advogado_posts() {
+    // A variável estática mantém seu valor entre as chamadas da função.
+    static $advogado_posts = null;
+    // Se a verificação ainda não foi feita ($advogado_posts é null), execute-a.
+    if ($advogado_posts === null) {
+        $posts = get_posts(array(
+            'post_type'      => 'advogado',
+            'post_status'    => 'publish',
+            'posts_per_page' => 1,          // Só precisamos de 1 para saber que existe.
+            'fields'         => 'ids',      // A forma mais rápida de consulta.
+        ));
+        // Define a variável como true se encontrou posts, ou false se o array estiver vazio.
+        $advogado_posts = !empty($posts);
+    }
+    // Retorna o resultado (que agora está em cache).
+    return $advogado_posts;
+}
+
 
 
 

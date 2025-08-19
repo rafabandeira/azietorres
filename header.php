@@ -76,9 +76,15 @@
             <ul>
                 <li><a class="nav-link scrollto <?php if (is_front_page()) echo 'active'; ?>" href="<?php echo home_url('#hero'); ?>">Home</a></li>
                 <li><a class="nav-link scrollto <?php if (is_page('about')) echo 'active'; ?>" href="<?php echo home_url('#about'); ?>">Escritório</a></li>
-                <li><a class="nav-link scrollto <?php if(get_post_type() == 'area_atuacao'){echo 'active';}?>" href="<?php echo home_url('#atuacao'); ?>">Atuação</a></li>
+            <?php if (tem_area_atuacao_posts()) : ?>
+                <li><a class="nav-link scrollto <?php if(is_singular('area_atuacao')){echo 'active';}?>" href="<?php echo home_url('/#atuacao'); ?>">Atuação</a></li>
+            <?php endif; ?>
+            <?php if (tem_advogado_posts()) : ?>
                 <li><a class="nav-link scrollto <?php if (is_page('team')) echo 'active'; ?>" href="<?php echo home_url('#team'); ?>">Advogados</a></li>
+            <?php endif; ?>
+            <?php if (tem_artigos_posts()) : ?>
                 <li><a class="nav-link scrollto <?php if (is_page('artigos')) echo 'active'; ?>" href="<?php echo home_url('/artigos'); ?>">Artigos</a></li>
+            <?php endif; ?>
                 <li><a class="nav-link scrollto <?php if (is_page('contact')) echo 'active'; ?>" href="<?php echo home_url('#contact'); ?>">Contato</a></li>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i> 

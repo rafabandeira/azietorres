@@ -120,30 +120,33 @@
       </section>
     <!-- End About Boxes Section --> 
   
-  
-<!-- ======= Services Section ======= -->
-<section id="atuacao" class="services section-bg">
-    <div class="container" data-aos="fade-up">
-        <div class="section-title">
-            <h2>Atuação</h2>
-            <p>Áreas de atuação</p>
-        </div>
-        <div class="row" data-aos="fade-up" data-aos-delay="200">
-            <?php
-            // Query para buscar as Áreas de Atuação
-            $args = array(
-                'post_type' => 'area_atuacao',
-                'posts_per_page' => -1, // Busca todas as áreas de atuação
-                'orderby' => 'title',
-                'order' => 'ASC'
-            );
-            $query = new WP_Query($args);
-            if ($query->have_posts()) :
-                while ($query->have_posts()) : $query->the_post();
+    <!-- ======= Áreas de Atuação Section ======= -->
+    <?php
+      // Query para buscar as Áreas de Atuação
+      $args = array(
+          'post_type' => 'area_atuacao',
+          'posts_per_page' => -1, // Busca todas as áreas de atuação
+          'orderby' => 'title',
+          'order' => 'ASC'
+      );
+      $query_atuacao = new WP_Query($args);
+      // Somente exibe a seção se houver posts para mostrar
+      if ($query_atuacao->have_posts()) :
+    ?>
+    <section id="atuacao" class="services section-bg">
+        <div class="container" data-aos="fade-up">
+            <div class="section-title">
+                <h2>Atuação</h2>
+                <p>Áreas de atuação</p>
+            </div>
+            <div class="row" data-aos="fade-up" data-aos-delay="200">
+                <?php
+                // Loop para exibir cada área de atuação encontrada
+                while ($query_atuacao->have_posts()) : $query_atuacao->the_post();
                     // Recupera os dados personalizados
                     $icon = get_post_meta(get_the_ID(), '_area_atuacao_icon', true);
                     $summary = get_post_meta(get_the_ID(), '_area_atuacao_summary', true);
-            ?>
+                ?>
                     <div class="col-md-6 mt-4 mt-md-0">
                         <div class="icon-box">
                             <i class="<?php echo esc_attr($icon); ?>"></i>
@@ -151,98 +154,101 @@
                             <p><?php echo esc_html($summary); ?></p>
                         </div>
                     </div>
-            <?php
-                endwhile; wp_reset_postdata();
-            else :
-                echo '<p>Nenhuma área de atuação encontrada.</p>';
-            endif;
-            ?>
+                <?php endwhile; ?>
+            </div>
         </div>
-    </div>
-</section>
-<!-- End Services Section -->
-  
-<!-- ======= Team Section ======= -->
-<section id="team" class="team section-bg">
-    <div class="container" data-aos="fade-up">
-        <div class="section-title">
-            <h2>Equipe</h2>
-            <p>Sócios e Advogados</p>
-        </div>
-        <div class="row">
-            <div class="swiper mySwiper">
-                <div class="swiper-wrapper">
-                    <?php
-                    // Query para buscar os advogados
-                    $args = array(
-                        'post_type' => 'advogado',
-                        'posts_per_page' => -1,
-                        'orderby' => 'title',
-                        'order' => 'ASC'
-                    );
-                    $query = new WP_Query($args);
-                    if ($query->have_posts()) :
+    </section>
+    <?php
+    wp_reset_postdata(); // Restaura os dados do post original
+    endif; // Fim da condição have_posts
+    ?>
+    <!-- ======= Fim de Áreas de Atuação Section ======= -->
+
+    
+    <!-- ======= Advogados Section ======= -->
+    <?php
+    // Query para buscar os advogados
+    $args = array(
+        'post_type'      => 'advogado',
+        'posts_per_page' => -1,
+        'orderby'        => 'title',
+        'order'          => 'ASC'
+    );
+    $query = new WP_Query($args);
+    // Somente exibe a seção se existirem posts de 'advogado'
+    if ($query->have_posts()) : ?>
+    <section id="team" class="team section-bg">
+        <div class="container" data-aos="fade-up">
+            <div class="section-title">
+                <h2>Equipe</h2>
+                <p>Sócios e Advogados</p>
+            </div>
+            <div class="row">
+                <div class="swiper mySwiper">
+                    <div class="swiper-wrapper">
+                        <?php
                         while ($query->have_posts()) : $query->the_post();
                             $photo = get_the_post_thumbnail_url(get_the_ID(), 'full');
                             $expertise = get_post_meta(get_the_ID(), '_advogado_expertise', true);
-                    ?>
-                    <div class="swiper-slide">
-                        <div class="member" data-aos="fade-up">
-                            <div class="pic">
-                                <img src="<?php echo esc_url($photo ? $photo : get_template_directory_uri() . '/assets/img/team/default.jpg'); ?>" class="img-fluid featured-image-fix" alt="<?php the_title(); ?>">
-                            </div>
-                            <div class="member-info">
-                                <h4><?php the_title(); ?></h4>
-                                <span><?php echo esc_html($expertise); ?></span>
+                        ?>
+                        <div class="swiper-slide">
+                            <div class="member" data-aos="fade-up">
+                                <div class="pic">
+                                    <img src="<?php echo esc_url($photo ? $photo : get_template_directory_uri() . '/assets/img/team/default.jpg'); ?>" class="img-fluid featured-image-fix" alt="<?php the_title(); ?>">
+                                </div>
+                                <div class="member-info">
+                                    <h4><?php the_title(); ?></h4>
+                                    <span><?php echo esc_html($expertise); ?></span>
+                                </div>
                             </div>
                         </div>
+                        <?php
+                        endwhile;
+                        wp_reset_postdata();
+                        ?>
                     </div>
-                    <?php
-                        endwhile; wp_reset_postdata();
-                    else :
-                        echo '<p>Nenhum advogado encontrado.</p>';
-                    endif;
-                    ?>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
                 </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
             </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var swiper = new Swiper(".mySwiper", {
+                        slidesPerView: 4,
+                        spaceBetween: 30,
+                        navigation: {
+                            nextEl: ".swiper-button-next",
+                            prevEl: ".swiper-button-prev",
+                        },
+                        pagination: {
+                            el: ".swiper-pagination",
+                            clickable: true,
+                        },
+                        loop: true,
+                        autoplay: {
+                            delay: 2500,
+                            disableOnInteraction: false,
+                        },
+                        breakpoints: {
+                            320: {
+                                slidesPerView: 1
+                            },
+                            768: {
+                                slidesPerView: 2
+                            },
+                            1024: {
+                                slidesPerView: 4
+                            }
+                        }
+                    });
+                });
+            </script>
         </div>
-        <script>
-          document.addEventListener('DOMContentLoaded', function() {
-              var swiper = new Swiper(".mySwiper", {
-                  slidesPerView: 4,
-                  spaceBetween: 30,
-                  navigation: {
-                      nextEl: ".swiper-button-next",
-                      prevEl: ".swiper-button-prev",
-                  },
-                  pagination: {
-                      el: ".swiper-pagination",
-                      clickable: true,
-                  },
-                  loop: true, // Adiciona o loop infinito
-                  autoplay: { // Configura o autoplay
-                      delay: 2500, // Tempo em milissegundos entre as transições
-                      disableOnInteraction: false, // Continua a reprodução automática mesmo após o usuário interagir
-                  },
-                  breakpoints: {
-                      320: {
-                          slidesPerView: 1
-                      },
-                      768: {
-                          slidesPerView: 2
-                      },
-                      1024: {
-                          slidesPerView: 4
-                      }
-                  }
-              });
-          });
-      </script>
-    </div>
-</section>
-<!-- End Team Section -->
+    </section>
+    <?php endif; ?>
+    <!-- ======= Fim de Advogados Section ======= -->
+
+
   
   <!-- ======= Contact Section ======= -->
   <?php

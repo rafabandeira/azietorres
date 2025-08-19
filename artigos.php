@@ -50,7 +50,16 @@ get_header(); ?>
                         </a>
                     </div>
                     <div class="article-content my-3">
-                        <h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+                        <h3><a href="<?php the_permalink(); ?>"><?php
+                            $titulo_original = get_the_title();
+                            $limite_caracteres = 70;
+                            if (mb_strlen($titulo_original) > $limite_caracteres) {
+                                $titulo_truncado = mb_substr($titulo_original, 0, $limite_caracteres) . '...';
+                                echo $titulo_truncado;
+                            } else {
+                                echo $titulo_original;
+                            }
+                        ?></a></h3>
                         <p class="small"><?php echo wp_trim_words(get_the_excerpt(), 20, '...'); ?></p>
                         <a href="<?php the_permalink(); ?>" class="read-more">Leia mais</a>
                     </div>

@@ -44,39 +44,38 @@
           <ul>
             <li><i class="bx bx-chevron-right"></i> <a href="/#hero">Home</a></li>
             <li><i class="bx bx-chevron-right"></i> <a href="/#about">Escritório</a></li>
-            <li><i class="bx bx-chevron-right"></i> <a href="/#atuacao">Atuação</a></li>
-            <li><i class="bx bx-chevron-right"></i> <a href="/#team">Advogados</a></li>
-            <li><i class="bx bx-chevron-right"></i> <a href="/artigos">Artigos</a></li>
+            <?php if (tem_area_atuacao_posts()) : ?><li><i class="bx bx-chevron-right"></i> <a href="/#atuacao">Atuação</a></li><?php endif; ?>
+            <?php if (tem_advogado_posts()) : ?><li><i class="bx bx-chevron-right"></i> <a href="/#team">Advogados</a></li><?php endif; ?>
+            <?php if (tem_artigos_posts()) : ?><li><i class="bx bx-chevron-right"></i> <a href="/artigos">Artigos</a></li><?php endif; ?>
           </ul>
         </div>
-        <div class="col-lg-3 col-md-6 footer-links">
-          <h4>Áreas de atuação</h4>
-          <?php
-            // Query para buscar as Áreas de Atuação
-            $args = array(
-                'post_type' => 'area_atuacao',
-                'posts_per_page' => -1, // Busca todas as áreas de atuação
-                'orderby' => 'title',
-                'order' => 'ASC'
-            );
-            $query = new WP_Query($args);
-            if ($query->have_posts()) : while ($query->have_posts()) : $query->the_post();
-            ?>
-            <ul>
-                <li><i class="bx bx-chevron-right"></i> <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
-            </ul>
+        
+        <?php if (tem_area_atuacao_posts()) : ?>
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>Áreas de atuação</h4>
             <?php
-                endwhile; wp_reset_postdata();
-            else :
-                echo '<p>Nenhuma área de atuação encontrada.</p>';
-            endif;
-            ?>
+              // Query para buscar as Áreas de Atuação
+              $args = array(
+                  'post_type' => 'area_atuacao',
+                  'posts_per_page' => -1, // Busca todas as áreas de atuação
+                  'orderby' => 'title',
+                  'order' => 'ASC'
+              );
+              $query = new WP_Query($args);
+              if ($query->have_posts()) : while ($query->have_posts()) : $query->the_post();
+              ?>
+              <ul>
+                  <li><i class="bx bx-chevron-right"></i> <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
+              </ul>
+              <?php
+                  endwhile; wp_reset_postdata();
+              else :
+                  echo '<p>Nenhuma área de atuação encontrada.</p>';
+              endif;
+              ?>
+          </div>
+        <?php endif; ?>
 
-
-
-
-
-        </div>
         <div class="col-lg-4 col-md-6 footer-newsletter">
             <h4>Newsletter</h4>
             <p>Assine nossa lista de transmissão</p>
