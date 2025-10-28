@@ -11,26 +11,12 @@ if ( ! function_exists( 'azietorres_setup' ) ) :
         // Add default posts and comments RSS feed links to head.
         add_theme_support( 'automatic-feed-links' );
         /* Post Thumbnails */
-        add_theme_support( 'post-thumbnails' );    }
+        add_theme_support( 'post-thumbnails' );
+        /* Title Tag */
+        add_theme_support( 'title-tag' );
+    }
 endif; // azietorres_setup
 add_action( 'after_setup_theme', 'azietorres_setup' );
-
-// Título
-function azietorres_wp_title( $title, $sep ) {
-    global $paged, $page;
-    if ( is_feed() ) { return $title; }
-    $title .= get_bloginfo( 'name', 'display' );
-    $site_description = get_bloginfo( 'description', 'display' );
-    if ( $site_description && ( is_home() || is_front_page() ) ) {
-        $title = "$title $sep $site_description";
-    }
-    if ( ( $paged >= 2 || $page >= 2 ) && ! is_404() ) {
-        $title = "$title $sep " . sprintf( __( 'Page %s', 'azietorres' ), max( $paged, $page ) );
-    }
-    return $title;
-}
-add_filter( 'wp_title', 'azietorres_wp_title', 10, 2 );
-
 
 // Remove Menu´s
 function remove_menus() {
@@ -88,9 +74,11 @@ if ( !is_singular()) //if it is not a post or a page
     echo '<meta property="og:title" content="' . get_the_title() . '"/>';
     echo '<meta property="og:type" content="article"/>';
     echo '<meta property="og:url" content="' . get_permalink() . '"/>';
-    echo '<meta property="og:site_name" content="' . get_the_title() . '"/>';
+    // CORREÇÃO: og:site_name deve ser o nome do site, não o título do post.
+    echo '<meta property="og:site_name" content="' . get_bloginfo( 'name' ) . '"/>';
 if(!has_post_thumbnail( $post->ID )) { //the post does not have featured image, use a default image
-    $default_image="https://azietorres.com.br/wp-content/themes/azietorres/assets/img/logo.png"; //replace this with a default image on your server or an image in your media library
+    // CORREÇÃO: Substituído URL hardcoded por função do WordPress.
+    $default_image = get_template_directory_uri() . "/assets/img/logo.png"; //replace this with a default image on your server or an image in your media library
     echo '<meta property="og:image" content="' . $default_image . '"/>';
 }
 else{
@@ -109,7 +97,8 @@ add_action( 'wp_head', 'insert_fb_in_head', 5 );
 /////////////////////////////////////////////////////////
 // Verificar atualizações do tema via servidor pessoal //
 /////////////////////////////////////////////////////////
-delete_site_transient('update_themes');
+// BUG 2: Removida linha 'delete_site_transient('update_themes');'. 
+// Esta linha NUNCA deve ser executada em todo load. Causa lentidão extrema.
 function update_checker( $transient ) {
     if ( empty( $transient->checked ) ) {
         return $transient;
@@ -150,21 +139,10 @@ function update_checker( $transient ) {
     return $transient;
 }
 add_filter( 'pre_set_site_transient_update_themes', 'update_checker' );
-// Garantir que o código funcione em Multisite
-function update_checker_multisite_network() {
-    if ( is_multisite() ) {
-        $sites = get_sites();
-        foreach ( $sites as $site ) {
-            switch_to_blog( $site->blog_id );
-            // Executar o código de verificação para cada site
-            $transient = get_site_transient( 'update_themes' );
-            $transient = update_checker( $transient );
-            set_site_transient( 'update_themes', $transient );
-            restore_current_blog();
-        }
-    }
-}
-add_action( 'admin_init', 'update_checker_multisite_network' );
+
+// BUG 3: Removida função 'update_checker_multisite_network' e seu hook 'admin_init'.
+// A função era redundante, pois 'pre_set_site_transient_update_themes' 
+// já lida com multisite e causava lentidão extrema no admin.
 
 
 
@@ -895,14 +873,16 @@ function my_theme_social_media_page_html() {
     if (!current_user_can('edit_pages')) {
         return;
     }
-    // Save settings
-    if (isset($_POST['my_social_media_options'])) {
-        update_option('my_social_media_options', $_POST['my_social_media_options']);
-    }
+    
+    // BUG 5: Removido tratamento manual de $_POST. 
+    // A Settings API (settings_fields, do_settings_sections) já cuida disso
+    // quando o <form> aponta para 'options.php'.
+    
     ?>
     <div class="wrap">
         <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
-        <form action="" method="post">
+        
+        <form action="options.php" method="post">
             <?php
             // Campos de formulário padrão do WordPress, incluindo nonce para segurança.
             settings_fields('my-social-media-settings');
