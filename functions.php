@@ -3,7 +3,7 @@ require_once __DIR__ . '/functions/security.php';
 require_once __DIR__ . '/functions/services/service-contact-form.php';
 require_once __DIR__ . '/functions/controllers/controller-single.php';
 require_once __DIR__ . '/functions/controllers/controller-contact.php';
-require_once __DIR__ . '/functions/enqueue-assets.php'; // <<< ADICIONADO
+require_once __DIR__ . '/functions/enqueue-assets.php';
 
 
 // Setup
@@ -16,7 +16,7 @@ if ( ! function_exists( 'azietorres_setup' ) ) :
         /* Title Tag */
         add_theme_support( 'title-tag' );
 
-        /* Nav Menus */ // <<< ADICIONADO
+        /* Nav Menus */
         register_nav_menus( array(
             'primary' => esc_html__( 'Menu Principal', 'azietorres' ),
         ) );
@@ -73,9 +73,48 @@ function add_opengraph_doctype( $output ) {
 }
 add_filter('language_attributes', 'add_opengraph_doctype');
 
-// <<< FUNÇÃO 'insert_fb_in_head' REMOVIDA DAQUI >>>
-// (A funcionalidade foi movida para o header.php, que está mais completa
-// e evita a duplicação de meta tags.)
+
+// INÍCIO: Desabilitar Comentários Globalmente
+// Remove o suporte a comentários e trackbacks de todos os tipos de post
+function disable_comments_post_types_support() {
+    $post_types = get_post_types();
+    foreach ($post_types as $post_type) {
+        if (post_type_supports($post_type, 'comments')) {
+            remove_post_type_support($post_type, 'comments');
+            remove_post_type_support($post_type, 'trackbacks');
+        }
+    }
+}
+add_action('admin_init', 'disable_comments_post_types_support');
+
+// Fecha comentários no front-end e impede submissão (API)
+function disable_comments_status() {
+    return false;
+}
+add_filter('comments_open', 'disable_comments_status', 20, 2);
+add_filter('pings_open', 'disable_comments_status', 20, 2);
+
+// Oculta comentários existentes
+function disable_comments_hide_existing_comments($comments) {
+    $comments = array();
+    return $comments;
+}
+add_filter('comments_array', 'disable_comments_hide_existing_comments', 10, 2);
+
+// Remove links de comentários da Admin Bar
+function disable_comments_admin_bar() {
+    if (is_admin_bar_showing()) {
+        remove_action('admin_bar_menu', 'wp_admin_bar_comments_menu', 60);
+    }
+}
+add_action('init', 'disable_comments_admin_bar');
+
+// Remove cabeçalho X-Pingback para reduzir spam
+add_filter('wp_headers', function($headers) {
+    unset($headers['X-Pingback']);
+    return $headers;
+});
+// FIM: Desabilitar Comentários Globalmente
 
 
 /////////////////////////////////////////////////////////
@@ -121,6 +160,3 @@ function update_checker( $transient ) {
     return $transient;
 }
 add_filter( 'pre_set_site_transient_update_themes', 'update_checker' );
-
-// (O restante do functions.php permanece igual...)
-// ... (CPTs, Metaboxes, Páginas de Opções, etc.)
