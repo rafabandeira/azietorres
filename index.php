@@ -4,6 +4,7 @@
   $post_response = apply_filters( 'send_contact_form', false );
 ?> 
 
+<!-- ======= Hero Section ======= --> 
 <?php
     $hero_bg = get_option('hero_background_image');
     $hero_logo = get_option('hero_logo_image');
@@ -15,8 +16,11 @@
         <img src="<?php echo esc_url($hero_logo ? $hero_logo : $default_logo); ?>" alt="" class="img-fluid">
     </div>
 </section>
+<!-- End Hero -->
+
 <main id="main"> 
   
+    <!-- ======= About Section ======= -->
     <?php
     $escritorio_img = get_option('escritorio_image');
     $escritorio_img = $escritorio_img ? $escritorio_img : get_template_directory_uri() . '/assets/img/recepcao.jpg';
@@ -47,6 +51,9 @@
             </div>
         </div>
     </section>
+    <!-- End About Section --> 
+  
+    <!-- ======= About Boxes Section ======= -->
     <?php
     $vvm_visao_img = get_option('vvm_visao_img');
     $vvm_visao_img = $vvm_visao_img ? $vvm_visao_img : get_template_directory_uri() . '/assets/img/visao.jpg';
@@ -111,6 +118,9 @@
         </div>
       </div>
       </section>
+    <!-- End About Boxes Section --> 
+  
+    <!-- ======= Áreas de Atuação Section ======= -->
     <?php
       // Query para buscar as Áreas de Atuação
       $args = array(
@@ -152,6 +162,10 @@
     wp_reset_postdata(); // Restaura os dados do post original
     endif; // Fim da condição have_posts
     ?>
+    <!-- ======= Fim de Áreas de Atuação Section ======= -->
+
+    
+    <!-- ======= Advogados Section ======= -->
     <?php
     // Query para buscar os advogados
     $args = array(
@@ -197,20 +211,50 @@
                     <div class="swiper-button-prev"></div>
                 </div>
             </div>
-            
-            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var swiper = new Swiper(".mySwiper", {
+                        slidesPerView: 4,
+                        spaceBetween: 30,
+                        navigation: {
+                            nextEl: ".swiper-button-next",
+                            prevEl: ".swiper-button-prev",
+                        },
+                        pagination: {
+                            el: ".swiper-pagination",
+                            clickable: true,
+                        },
+                        loop: true,
+                        autoplay: {
+                            delay: 2500,
+                            disableOnInteraction: false,
+                        },
+                        breakpoints: {
+                            320: {
+                                slidesPerView: 1
+                            },
+                            768: {
+                                slidesPerView: 2
+                            },
+                            1024: {
+                                slidesPerView: 4
+                            }
+                        }
+                    });
+                });
+            </script>
+        </div>
     </section>
     <?php endif; ?>
-    <?php
-    // CORREÇÃO: Chaves de 'option' e valores 'default' atualizados 
-    // para bater com 'contact_settings_page' em functions.php.
-    $default_address = 'Av. Prof. Magalhães Neto, n° 1550, Ed. Premier Tower Empresarial, Conj. salas 1106 a 1110, Pituba, Salvador/BA. CEP 41.810-012';
-    $default_email = 'recepcao@azietorres.com.br';
-    $default_telefax = "71 3342-1228\n71 3646-8170";
+    <!-- ======= Fim de Advogados Section ======= -->
 
-    $contact_address = get_option('contact_address', $default_address);
-    $contact_email = get_option('contact_email', $default_email);
-    $contact_telefax = get_option('contact_telefax', $default_telefax);
+
+  
+  <!-- ======= Contact Section ======= -->
+  <?php
+    $contact_endereco = get_option('contact_endereco', "Av. Prof. Magalhães Neto, n° 1550, Ed. Premier Tower Empresarial, Conj. salas 1106 a 1110, Pituba, Salvador/BA. CEP 41.810-012");
+    $contact_email = get_option('contact_email', "recepcao@azietorres.com.br");
+    $contact_tel = get_option('contact_telefax', "71 3342-1228\n71 3646-8170");
   ?>
   <section id="contact" class="contact">
     <div class="container" data-aos="fade-up">
@@ -235,7 +279,8 @@
               <div class="info-box"> 
                 <i class="bx bx-map"></i>
                 <h3>Endereço</h3>
-                <p><?php echo esc_html($contact_address); ?></p> </div>
+                <p><?php echo esc_html($contact_endereco); ?></p>
+              </div>
             </div>
             <div class="col-md-6">
               <div class="info-box mt-4"> <i class="bx bx-envelope"></i>
@@ -247,7 +292,7 @@
               <div class="info-box mt-4"> <i class="bx bx-phone-call"></i>
                 <h3>Telefax</h3>
                 <?php 
-                    $telefones = esc_html($contact_telefax); // Corrigido de $contact_tel
+                    $telefones = esc_html($contact_tel);
                     foreach (explode("\n", $telefones) as $item) {
                         $item = trim($item);
                         if ($item) { echo '<p> ' . esc_html($item) . '</p>'; }
@@ -281,5 +326,11 @@
       </div>
     </div>
   </section>
-  </main>
+  <!-- End Contact Section --> 
+  
+</main>
+<!-- End #main --> 
+
+
 <?php get_footer(); ?>
+
