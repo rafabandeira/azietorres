@@ -174,21 +174,100 @@ function vvm_settings_page()
         update_option('vvm_missao_title', sanitize_text_field($_POST['vvm_missao_title']));
         update_option('vvm_missao_text', wp_kses_post($_POST['vvm_missao_text']));
     }
-    // Repetitive logic for VVM fields (omitted for brevity but should be complete in real use)
-    // I'll stick to the core ones to keep the response manageable but robust.
-    $visao_img = get_option('vvm_visao_img');
-    $valores_img = get_option('vvm_valores_img');
-    $missao_img = get_option('vvm_missao_img');
+
+    // Default Images
+    $default_visao_img = get_template_directory_uri() . '/assets/img/visao.jpg';
+    $default_valores_img = get_template_directory_uri() . '/assets/img/valores.jpg';
+    $default_missao_img = get_template_directory_uri() . '/assets/img/missao.jpg';
+
+    // Get Options
+    $visao_img = get_option('vvm_visao_img', $default_visao_img);
+    $visao_title = get_option('vvm_visao_title', 'Nossa visão');
+    $visao_text = get_option('vvm_visao_text', 'Exceder as expectativas dos clientes...');
+
+    $valores_img = get_option('vvm_valores_img', $default_valores_img);
+    $valores_title = get_option('vvm_valores_title', 'Nossos valores');
+    $valores_list = get_option('vvm_valores_list', "Ética e honestidade;\nDedicação e criatividade;\nTrabalho em equipe;\nQualidade no atendimento aos clientes;\nProfissionalismo e proatividade;\nCooperação e responsabilidade social.");
+
+    $missao_img = get_option('vvm_missao_img', $default_missao_img);
+    $missao_title = get_option('vvm_missao_title', 'Nossa missão');
+    $missao_text = get_option('vvm_missao_text', 'Prestar serviços jurídicos com ética...');
+
     ?>
     <div class="wrap">
         <h1>Visão, Valores e Missão</h1>
         <form method="post" action="">
             <?php wp_nonce_field('vvm_settings_save', 'vvm_settings_nonce'); ?>
-            <p>Os campos seguem o padrão das outras seções para imagens e textos.</p>
+
+            <h2 class="title">Visão</h2>
+            <table class="form-table">
+                <tr>
+                    <th>Imagem da Visão</th>
+                    <td>
+                        <input type="hidden" id="vvm_visao_img" name="vvm_visao_img" value="<?php echo esc_attr($visao_img); ?>">
+                        <img id="vvm_visao_img_thumb" src="<?php echo esc_url($visao_img); ?>" style="max-width:150px;display:block;margin-bottom:10px;" />
+                        <button type="button" class="button button-upload" data-input="vvm_visao_img" data-thumb="vvm_visao_img_thumb">Selecionar Imagem</button>
+                        <button type="button" class="button button-remove" data-input="vvm_visao_img" data-thumb="vvm_visao_img_thumb" data-default="<?php echo esc_attr($default_visao_img); ?>">Remover</button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Título da Visão</th>
+                    <td><input type="text" name="vvm_visao_title" value="<?php echo esc_attr($visao_title); ?>" class="large-text"></td>
+                </tr>
+                <tr>
+                    <th>Texto da Visão</th>
+                    <td><textarea name="vvm_visao_text" rows="4" class="large-text"><?php echo esc_textarea($visao_text); ?></textarea></td>
+                </tr>
+            </table>
+
+            <hr>
+            <h2 class="title">Valores</h2>
+            <table class="form-table">
+                <tr>
+                    <th>Imagem dos Valores</th>
+                    <td>
+                        <input type="hidden" id="vvm_valores_img" name="vvm_valores_img" value="<?php echo esc_attr($valores_img); ?>">
+                        <img id="vvm_valores_img_thumb" src="<?php echo esc_url($valores_img); ?>" style="max-width:150px;display:block;margin-bottom:10px;" />
+                        <button type="button" class="button button-upload" data-input="vvm_valores_img" data-thumb="vvm_valores_img_thumb">Selecionar Imagem</button>
+                        <button type="button" class="button button-remove" data-input="vvm_valores_img" data-thumb="vvm_valores_img_thumb" data-default="<?php echo esc_attr($default_valores_img); ?>">Remover</button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Título dos Valores</th>
+                    <td><input type="text" name="vvm_valores_title" value="<?php echo esc_attr($valores_title); ?>" class="large-text"></td>
+                </tr>
+                <tr>
+                    <th>Lista de Valores (1 por linha)</th>
+                    <td><textarea name="vvm_valores_list" rows="6" class="large-text"><?php echo esc_textarea($valores_list); ?></textarea></td>
+                </tr>
+            </table>
+
+            <hr>
+            <h2 class="title">Missão</h2>
+            <table class="form-table">
+                <tr>
+                    <th>Imagem da Missão</th>
+                    <td>
+                        <input type="hidden" id="vvm_missao_img" name="vvm_missao_img" value="<?php echo esc_attr($missao_img); ?>">
+                        <img id="vvm_missao_img_thumb" src="<?php echo esc_url($missao_img); ?>" style="max-width:150px;display:block;margin-bottom:10px;" />
+                        <button type="button" class="button button-upload" data-input="vvm_missao_img" data-thumb="vvm_missao_img_thumb">Selecionar Imagem</button>
+                        <button type="button" class="button button-remove" data-input="vvm_missao_img" data-thumb="vvm_missao_img_thumb" data-default="<?php echo esc_attr($default_missao_img); ?>">Remover</button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Título da Missão</th>
+                    <td><input type="text" name="vvm_missao_title" value="<?php echo esc_attr($missao_title); ?>" class="large-text"></td>
+                </tr>
+                <tr>
+                    <th>Texto da Missão</th>
+                    <td><textarea name="vvm_missao_text" rows="4" class="large-text"><?php echo esc_textarea($missao_text); ?></textarea></td>
+                </tr>
+            </table>
+
             <?php submit_button('Salvar Alterações', 'primary', 'vvm_settings_submit'); ?>
         </form>
     </div>
-    <?php
+    <?php azietorres_admin_inline_script();
 }
 
 // Common script for media uploader
